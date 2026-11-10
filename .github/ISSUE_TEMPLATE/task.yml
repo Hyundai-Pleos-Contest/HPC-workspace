@@ -1,0 +1,22 @@
+name: 작업
+description: 기능, 설정 또는 문서 작업
+title: "[작업] "
+body:
+  - type: textarea
+    id: purpose
+    attributes:
+      label: 목적
+      description: 해결할 문제와 필요한 결과를 적어 주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: completion
+    attributes:
+      label: 완료 조건
+      description: 확인 가능한 완료 조건을 적어 주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: 관련 저장소와 의존 작업

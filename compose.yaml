@@ -1,0 +1,48 @@
+name: hpc-dev
+
+services:
+  postgres:
+    image: postgres:17.11-bookworm
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-hpc}
+      POSTGRES_USER: ${POSTGRES_USER:-hpc}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-hpc-local-only}
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  backend:
+    profiles: ["backend"]
+    build:
+      context: ../HPC-be
+    environment:
+      SPRING_PROFILES_ACTIVE: postgres
+      DB_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-hpc}
+      DB_USERNAME: ${POSTGRES_USER:-hpc}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-hpc-local-only}
+      AI_BASE_URL: http://ai:8000
+    ports:
+      - "127.0.0.1:${BE_PORT:-8080}:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  ai:
+    profiles: ["ai"]
+    build:
+      context: ../HPC-ai
+    environment:
+      HPC_AI_HOST: 0.0.0.0
+      HPC_AI_PORT: "8000"
+      HPC_AI_LOG_LEVEL: info
+    ports:
+      - "127.0.0.1:${AI_PORT:-8000}:8000"
+
+volumes:
+  postgres-data:
