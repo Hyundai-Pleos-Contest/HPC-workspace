@@ -34,7 +34,7 @@ Android Studio의 SDK Manager → SDK Update Sites에 공식 Pleos 이미지 사
 SDK Platforms에서 **Show Package Details**를 켜고 Android API 34의 Pleos Connect 이미지를 설치한다.
 Android Studio를 재시작한 뒤 Device Manager에서 Automotive → Pleos Connect v2.1.0 장치를 만들고,
 API 34 / Pleos Connect v2.1.0 APIs 이미지, RAM 4 GB, Cold boot를 선택한다.
-Windows/Linux x86_64 이미지 다운로드는 약 4.1 GB이며 압축 해제와 AVD 데이터용 여유 공간도 필요하다.
+Windows/Linux x86_64 이미지 다운로드는 약 4.1 GB, 압축 해제 이미지 자체는 약 20 GB이며 AVD 데이터용 여유 공간도 필요하다.
 정확한 최신 설치 화면과 요구 사항은 위 공식 에뮬레이터 안내를 따른다.
 
 Pleos는 [Quick boot에서 VHAL을 사용할 수 없음](https://document.pleos.ai/en/docs/connect/guide/getting-started/application-development/configure-pleos-connect-emulator)을 안내하므로 Cold boot를 유지한다.
@@ -42,7 +42,7 @@ headless 실행으로 부팅·앱 실행·SDK 조회를 확인할 수 있지만,
 [Form Factor 멀티디스플레이 검사](https://document.pleos.ai/en/docs/pleos-only/app-test-guide/form-factor-test-guide)는 별도 에뮬레이터 창이 필요하다.
 SDK 스모크 테스트 통과를 화면·주행 제한·실차 검증 완료로 확대 해석하지 않는다.
 
-이후 APK 빌드·설치와 읽기 전용 SDK 스모크 테스트는 [HPC-fe README](https://github.com/Hyundai-Pleos-Contest/HPC-fe#readme)를 따른다.
+이후 APK 빌드·설치와 읽기 전용 SDK 스모크 테스트는 [HPC-fe README](https://github.com/Hyundai-Pleos-Contest/HPC-fe/blob/develop/README.md)를 따른다.
 `mock` 빌드는 일반 개발용이고, 실제 SDK 검사는 `-PenablePleos=true`와 전용 Pleos AVD를 사용한다.
 Docker는 DB·BE·AI 실행에 사용하며 Android 앱은 에뮬레이터에서 실행한다.
 BE 포트를 변경했다면 [Docker 빠른 시작](local-testing.md)의 Android 주소 설정도 함께 변경한다.

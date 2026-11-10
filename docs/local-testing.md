@@ -5,7 +5,7 @@ PostgreSQL과 BE를 띄우고 상태 응답을 확인하는 절차다. AI는 필
 ## 1. 준비
 
 - Git과 실행 중인 Docker 엔진, Docker Compose가 필요하다. Windows/macOS에서는 Docker Desktop의 Linux 컨테이너 엔진을 사용한다.
-- Docker로 BE/AI를 실행할 때 호스트에 Java·Python·Gradle을 따로 설치할 필요는 없다. Android 앱 개발 도구는 [HPC-fe README](https://github.com/Hyundai-Pleos-Contest/HPC-fe#readme)를 따른다.
+- Docker로 BE/AI를 실행할 때 호스트에 Java·Python·Gradle을 따로 설치할 필요는 없다. Android 앱 개발 도구는 [HPC-fe README](https://github.com/Hyundai-Pleos-Contest/HPC-fe/blob/develop/README.md)를 따른다.
 - 첫 빌드는 이미지·의존성을 내려받으므로 인터넷 연결과 시간이 필요하다.
 
 ```sh
@@ -28,14 +28,14 @@ HPC/
 새 작업 폴더에서 받을 때는 두 운영체제 모두 다음 명령을 사용한다.
 
 ```sh
-git clone https://github.com/Hyundai-Pleos-Contest/HPC-workspace.git
-git clone https://github.com/Hyundai-Pleos-Contest/HPC-fe.git
-git clone https://github.com/Hyundai-Pleos-Contest/HPC-be.git
-git clone https://github.com/Hyundai-Pleos-Contest/HPC-ai.git
+git clone --branch develop https://github.com/Hyundai-Pleos-Contest/HPC-workspace.git
+git clone --branch develop https://github.com/Hyundai-Pleos-Contest/HPC-fe.git
+git clone --branch develop https://github.com/Hyundai-Pleos-Contest/HPC-be.git
+git clone --branch develop https://github.com/Hyundai-Pleos-Contest/HPC-ai.git
 cd HPC-workspace
 ```
 
-각 저장소는 테스트할 브랜치/커밋을 선택한다. Compose는 `../HPC-be`, `../HPC-ai`의 현재 소스를 빌드한다.
+위 명령은 개발 통합 브랜치인 `develop`을 선택한다. 특정 릴리스를 검사할 때는 해당 태그/커밋으로 전환한다. Compose는 `../HPC-be`, `../HPC-ai`의 현재 소스를 빌드한다.
 
 ## 2. 개발 설정 복사
 
