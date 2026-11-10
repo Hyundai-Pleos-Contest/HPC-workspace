@@ -9,19 +9,9 @@
 - 네 저장소를 형제 폴더로 배치한다. 개별 저장소 실행에는 형제 폴더가 필수가 아니며 통합 Compose 빌드에만 BE/AI 경로가 필요하다.
 
 ## Compose
-HPC-workspace에서 PowerShell은 `Copy-Item .env.example .env`, Linux는 `cp .env.example .env`로 시작한다.
-Compose는 이 디렉터리의 .env를 변수 치환에 사용한다. 실제 주입 항목은 compose.yaml의 environment가 기준이다.
-
-| 목적 | 명령 |
-| --- | --- |
-| DB만 | `docker compose up -d postgres` |
-| DB + BE | `docker compose --profile backend up -d --build` |
-| DB + BE + AI | `docker compose --profile backend --profile ai up -d --build` |
-| 상태 | `docker compose --profile backend --profile ai ps` |
-| 로그 | `docker compose --profile backend --profile ai logs --tail 100` |
-| 종료 | `docker compose --profile backend --profile ai down` |
-
-down은 DB 데이터를 보존한다. DB 초기화가 필요할 때만 해당 개발 데이터의 폐기를 결정한 뒤 볼륨을 제거한다.
+[Docker 로컬 테스트 빠른 시작](local-testing.md)에 운영체제별 설정 복사, 실행 범위 선택,
+health 확인, 포트 충돌 대응, 재빌드와 DB를 보존하는 종료 명령을 모았다.
+Compose는 HPC-workspace의 `.env`를 변수 치환에 사용한다. 실제 주입 항목은 `compose.yaml`의 `environment`가 기준이다.
 이 Compose는 개발 전용으로 호스트 포트를 loopback에 바인딩한다. 실제 배포·TLS·인증은 후속 작업이다.
 
 ## 환경 변수
@@ -32,12 +22,8 @@ down은 DB 데이터를 보존한다. DB 초기화가 필요할 때만 해당 �
 - Android의 서버 주소는 HPC-fe Gradle 설정을 따른다. .env나 비밀키를 APK에 포함하지 않는다.
 
 ## 확인
-BE가 준비되면 /actuator/health는 UP을, AI의 /health는 ok를 반환한다.
-PowerShell: `Invoke-RestMethod http://localhost:8080/actuator/health`
-Linux: `curl --fail http://localhost:8080/actuator/health`
-
-Android 에뮬레이터는 기본적으로 호스트의 localhost 대신 10.0.2.2를 사용한다.
-BE_PORT를 바꾸었다면 앱의 개발 주소도 함께 바꾼다. 실기기는 별도 연결 경로가 필요하다.
+[빠른 시작](local-testing.md)의 상태 확인과 Android 주소 설정 절차를 따른다.
+BE_PORT를 바꾸었다면 호스트 확인 URL과 앱의 개발 주소도 함께 바꾼다. 실기기는 별도 HTTPS 연결 경로가 필요하다.
 
 ## 통합 범위
 현재 BE와 AI는 각각 기본 상태 확인만 제공한다. AI_BASE_URL 설정은 향후 연결 지점이며,
