@@ -4,6 +4,9 @@ PostgreSQL과 BE를 띄우고 상태 응답을 확인하는 절차다. AI는 필
 
 ## 1. 준비
 
+Python 3.12가 설치되어 있다면 [공용 실행 도구](local-tools.md)로 아래 절차를 실행할 수 있다.
+직접 Docker 명령만 사용하는 이 문서의 절차에는 호스트 Python이 필요하지 않다.
+
 - Git과 실행 중인 Docker 엔진, Docker Compose가 필요하다. Windows/macOS에서는 Docker Desktop의 Linux 컨테이너 엔진을 사용한다.
 - Docker로 BE/AI를 실행할 때 호스트에 Java·Python·Gradle을 따로 설치할 필요는 없다. Android 앱 개발 도구는 [HPC-fe README](https://github.com/Hyundai-Pleos-Contest/HPC-fe/blob/develop/README.md)를 따른다.
 - 첫 빌드는 이미지·의존성을 내려받으므로 인터넷 연결과 시간이 필요하다.

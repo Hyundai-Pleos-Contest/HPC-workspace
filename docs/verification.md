@@ -51,3 +51,37 @@ CI workflow는 각 저장소의 verify job으로 실행한다. 아래 페이지�
 - APK를 다시 설치하고 `am start --user current`의 Launcher intent로 실행했다. 현재 사용자 10의 앱이 visible 상태이며 HPC 초기 화면이 표시되는 것을 캡처로 확인했다.
 - 초기 AVD/host renderer 구성에서는 서비스 조회·설치 대기가 관찰됐다. 새 AVD/software 구성에서 통과했으며 하드웨어 렌더러 자체가 원인이라고 단정하지 않는다.
 - headless 검증으로 앱 실행·SDK 조회를 확인했다. 실제 차량, 주행 중 동작, 멀티디스플레이 적합성은 이번 범위에 포함되지 않는다.
+
+## 공용 실행 도구·새 clone 검증 — 2026-11-12
+
+네 저장소를 별도 빈 부모 폴더에 Git clone해 검사했다. 기존 `.env`, `.local`,
+`local.properties`, 프로젝트 빌드 산출물과 Gradle 캐시는 복사하지 않았다.
+검증 절차는 [공용 로컬 도구](local-tools.md)에 기록했다.
+
+| 소스 | 검증 기준 커밋 |
+| --- | --- |
+| HPC-workspace 공용 도구 | `5aa41f7` |
+| HPC-fe 공용 도구 | `ea9bf5e` (초기 APK 빌드는 `96e5b53`, 이후 변경은 Python URL 검증과 해당 테스트뿐) |
+| HPC-be | `8eef9c3` |
+| HPC-ai | `ef7210a` |
+
+- Windows / Python 3.12.12에서 workspace 도구 검사 3개, FE 도구 검사 5개가 통과했다.
+- 네 저장소 공통 정책과 Markdown 참조 검사, diff 공백 검사를 통과했다.
+- Android는 새 빈 `GRADLE_USER_HOME`에서 Gradle/의존성을 다운로드했다.
+  Pleos 앱·계측 APK와 Lint가 6분 52초에 통과했고 75개 작업이 실행됐다.
+- SDK와 Pleos AVD는 기존 설치를 명시적으로 전달했다. SDK/이미지 설치가 없는 새 PC 검증은 아니다.
+- 공용 `start`로 Pleos API 34 AVD를 cold boot하고 `test`에서 실제 Vehicle SDK 계측
+  1개가 3.898초에 통과했다. `launch` 후 현재 사용자 10의 `visible=true`를 확인하고 `stop`으로 종료했다.
+- 직접 adb 계측 stdout 로그를 로컬에 보관했다. 실제 차량 검증과 구분한다.
+- Docker Engine 29.6.1 / Compose 5.2.0에서 `init → doctor → up --stack all → status → health → down`을 실행했다.
+  프로젝트 `hpc-repro-20261112`, DB 25432 / BE 28080 / AI 28000으로 기존 개발 환경과 분리했다.
+- PostgreSQL healthy, BE `{"status":"UP"}`, AI `{"status":"ok","service":"hpc-ai"}`를 확인했다.
+  AI 이미지는 Docker 레이어 캐시를 재사용했고, BE는 새 기본 이미지와 Gradle 의존성을 다운로드해 bootJar를 다시 빌드했다.
+  Docker 전체 캐시를 지운 빌드로 표현하지 않는다.
+- 테스트 DB에 임시 행을 저장한 뒤 공용 `down`과 `up --stack database`를 실행했다.
+  PostgreSQL만 실행됐으며 기존 행 1개가 유지됨을 확인했다. 개발자의 원래 `.env`는 수정하지 않았다.
+- 검증 후 컨테이너를 종료하고 소유 라벨을 확인한 임시 테스트 볼륨만 정리했다.
+  기존 `hpc-dev_postgres-data`와 다른 프로젝트의 실행 중인 컨테이너는 유지했다.
+- Docker 시작 시 WSL 데이터 디스크 연결 오류가 있었다. 실패한 Docker 프로세스와 전용 WSL 인스턴스를
+  종료 후 다시 시작해 복구했고, 데이터 초기화·가상 디스크 삭제·다른 WSL 배포판 종료는 하지 않았다.
+- Claude 실제 지침 로딩 검사는 기존 사용자 요청에 따라 계속 보류했다.

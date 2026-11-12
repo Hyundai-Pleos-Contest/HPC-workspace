@@ -17,6 +17,8 @@
 - `python scripts/check.py`: workspace 공통 정책·문서 확인.
 - `python scripts/check.py --siblings`: 형제 레포까지 공통 정책과 AI 진입 문서 확인.
 - `docker compose --profile backend --profile ai config --quiet`: 통합 설정 구문 확인.
+- `python -m unittest discover -s scripts -p "test_*.py"`: 공용 실행 스크립트의 설정·DB 보존 검사.
+- 로컬 실행은 docs/local-tools.md의 `python scripts/dev.py`를 사용한다. 별도 검증에서는 프로젝트 이름과 포트를 분리한다.
 - 컨테이너 동작 변경 시 필요한 profile을 실행하고 실제 health 응답을 확인한다.
 
 ## 고유 규칙
