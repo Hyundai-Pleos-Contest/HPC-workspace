@@ -25,6 +25,10 @@
 
 ## 로컬 인프라
 
+Python 3.12가 있다면 [공용 실행 도구](docs/local-tools.md)의
+`python scripts/dev.py init → doctor → up → health → down` 순서로 실행할 수 있다.
+기본은 DB + BE이며 `--stack all`로 AI를 포함한다.
+
 Docker Desktop의 Linux 컨테이너 엔진과 Docker Compose가 필요하다.
 [빠른 시작](docs/local-testing.md)에 PowerShell·Linux/macOS 명령, 기존 `.env`를 보존하는 설정 복사,
 DB만/BE/AI 실행 선택, 포트 충돌, 로그 확인과 DB 데이터를 보존하는 종료 방법을 정리했다.
@@ -46,6 +50,7 @@ CI는 workspace 자체와 Compose 구문을 검사한다. 서비스 빌드는 �
 ## 문서
 
 - [Docker 로컬 테스트 빠른 시작](docs/local-testing.md)
+- [공용 실행 스크립트와 새 clone 확인](docs/local-tools.md)
 - [개발 도구와 환경변수](docs/development.md)
 - [GitHub 초기 구성](docs/github-setup.md)
 - [공모전·SDK 확인 사항](docs/pleos.md)
